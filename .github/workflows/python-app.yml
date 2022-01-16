@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -24,23 +24,11 @@ jobs:
       run: pip install -r requirements.txt
     - name: Install chromedriver and add to path
       run: |
-          sudo apt-get install -y unzip
-          sudo apt-get install -y wget
-          DEBIAN_FRONTEND=noninteractive
-          sudo wget -N http://chromedriver.storage.googleapis.com/92.0.4515.107/chromedriver_linux64.zip
-          sudo unzip chromedriver_linux64.zip
-          sudo mv -f chromedriver /usr/local/share/chromedriver
-          sudo rm /usr/bin/chromedriver
-          sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
-          sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
-          sudo apt-get install -y libx11-6
-          sudo apt-get install -y libnss3
-          sudo apt-get install -y libglib2.0-0
-          sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo apt install -y ./google-chrome-stable_current_amd64.deb
-          sudo apt-get install -y vim
-          sudo sed 's/$HERE\/chrome"/\/opt\/google\/chrome\/chrome"/' -i /usr/bin/google-chrome
-          sudo sed 's/$@"/$@" --no-sandbox/' -i /usr/bin/google-chrome
+          Set-ExecutionPolicy Bypass -Scope Process -Force; 
+          iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+          choco --version
+          choco install chromedriver
+          chromedriver --version
     - name: Run Test Mode Recorder TestCases
       run: robot -d results ./Tests/autorecorder_test.robot
     - name: Run Suite Mode Recorder TestCases
