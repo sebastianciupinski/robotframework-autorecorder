@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
     - name: Run Test Mode Recorder TestCases
-      run: robot -d results .\Test\autorecorder_test.robot
+      run: robot -d results ./Tests/autorecorder_test.robot
     - name: Run Suite Mode Recorder TestCases
-      run: robot -d results .\Test\autorecorder_suite_test.robot
+      run: robot -d results ./Tests/autorecorder_suite_test.robot
 
