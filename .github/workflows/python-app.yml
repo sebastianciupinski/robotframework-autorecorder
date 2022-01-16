@@ -26,7 +26,7 @@ jobs:
       run: |
           sudo apt-get install -y unzip
           sudo apt-get install -y wget
-          sudo DEBIAN_FRONTEND=noninteractive
+          DEBIAN_FRONTEND=noninteractive
           sudo wget -N http://chromedriver.storage.googleapis.com/92.0.4515.107/chromedriver_linux64.zip
           sudo unzip chromedriver_linux64.zip
           sudo mv -f chromedriver /usr/local/share/chromedriver
