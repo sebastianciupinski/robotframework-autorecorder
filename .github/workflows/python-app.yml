@@ -22,6 +22,24 @@ jobs:
         python-version: "3.10"
     - name: Install dependencies
       run: pip install -r requirements.txt
+    - name: Install chromedriver and add to path
+      run: |
+          apt-get install -y unzip
+          apt-get install -y wget
+          DEBIAN_FRONTEND=noninteractive
+          wget -N http://chromedriver.storage.googleapis.com/92.0.4515.107/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          mv -f chromedriver /usr/local/share/chromedriver
+          ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
+          ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+          apt-get install -y libx11-6
+          apt-get install -y libnss3
+          apt-get install -y libglib2.0-0
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          apt install -y ./google-chrome-stable_current_amd64.deb
+          apt-get install -y vim
+          sed 's/$HERE\/chrome"/\/opt\/google\/chrome\/chrome"/' -i /usr/bin/google-chrome
+          sed 's/$@"/$@" --no-sandbox/' -i /usr/bin/google-chrome
     - name: Run Test Mode Recorder TestCases
       run: robot -d results ./Tests/autorecorder_test.robot
     - name: Run Suite Mode Recorder TestCases
