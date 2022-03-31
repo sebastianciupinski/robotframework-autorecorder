@@ -1,0 +1,36 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: AutoRecorder
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+    - name: Install chromedriver and add to path
+      run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force; 
+          iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+          choco --version
+          choco install chromedriver
+          chromedriver --version
+    - name: Run Test Mode Recorder TestCases
+      run: robot -d results ./Tests/autorecorder_test.robot
+    - name: Run Suite Mode Recorder TestCases
+      run: robot -d results ./Tests/autorecorder_suite_test.robot
+

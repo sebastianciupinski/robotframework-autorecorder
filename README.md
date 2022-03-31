@@ -1,6 +1,7 @@
 AutoRecorder for Robot Framework
 ==================================================
 
+[![AutoRecorder](https://github.com/SanthoshS20/robotframework-autorecorder/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/SanthoshS20/robotframework-autorecorder/actions/workflows/python-app.yml)
 
 Introduction
 ------------
