@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-
+from robot.running import context
 from .listener import AutoRecorderListener
 
 class AutoRecorder(AutoRecorderListener):
@@ -90,4 +90,5 @@ SuiteAndTestRecorder.robot
         monitor, name, fps, size_percentage, embed, embed_with - configuration of underlaying ScreenCapLibrary - see documentation - 
         https://mihaiparvu.github.io/ScreenCapLibrary/ScreenCapLibrary.html#Start%20Video%20Recording
         '''
-        super().__init__(mode, monitor, fps, size_percentage, embed, embed_width)
+        if context.EXECUTION_CONTEXTS.current.dry_run is False:
+            super().__init__(mode, monitor, fps, size_percentage, embed, embed_width)
