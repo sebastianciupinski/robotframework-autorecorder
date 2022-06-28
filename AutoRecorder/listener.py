@@ -20,13 +20,14 @@ class AutoRecorderListener(object):
 
         
 
-    def __init__(self, mode, monitor, fps, size_percentage, embed, embed_width):
+    def __init__(self, mode, monitor, fps, size_percentage, embed, embed_width, screenshot_directory):
         self.mode = mode
         self.monitor = monitor
         self.fps = fps
         self.size_percentage = size_percentage
         self.embed = embed
         self.embed_width = embed_width
+        self.screenshot_directory = screenshot_directory
         self.ROBOT_LIBRARY_LISTENER = self
 
     def _start_test(self, name, attrs):
@@ -47,7 +48,7 @@ class AutoRecorderListener(object):
             BuiltIn().run_keyword("Stop Recording Test", id)
 
     def _start_suite(self, name, attrs):
-        BuiltIn().import_library("ScreenCapLibrary")
+        BuiltIn().import_library("ScreenCapLibrary", "screenshot_directory=" + self.screenshot_directory)
         if "suite" in self.mode:
             id = BuiltIn().get_variable_value("${SUITE_NAME}")
             #BuiltIn().run_keyword_and_ignore_error('ScreenCapLibrary.Start Video Recording',
