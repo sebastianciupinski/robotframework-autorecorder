@@ -75,7 +75,7 @@ SuiteAndTestRecorder.robot
 
 
     '''
-    def __init__(self, mode="test", monitor=0, name="recording", fps=None, size_percentage=1, embed=True, embed_width="800px"):
+    def __init__(self, mode="test", monitor=0, name="recording", fps=None, size_percentage=1, embed=True, embed_width="800px", screenshot_directory=None):
         '''
         Import Arguments:
         
@@ -91,4 +91,4 @@ SuiteAndTestRecorder.robot
         https://mihaiparvu.github.io/ScreenCapLibrary/ScreenCapLibrary.html#Start%20Video%20Recording
         '''
         if context.EXECUTION_CONTEXTS.current.dry_run is False:
-            super().__init__(mode, monitor, fps, size_percentage, embed, embed_width)
+            super().__init__(mode, monitor, fps, size_percentage, embed, embed_width, screenshot_directory)
