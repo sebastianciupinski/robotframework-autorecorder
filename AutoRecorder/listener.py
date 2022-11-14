@@ -21,7 +21,7 @@ class AutoRecorderListener(object):
 
         
 
-    def __init__(self, mode, monitor, fps, size_percentage, embed, embed_width, screenshot_directory):
+    def __init__(self, mode, monitor, fps, size_percentage, embed, embed_width, screenshot_directory, included_tags, excluded_tags):
         self.mode = mode
         self.monitor = monitor
         self.fps = fps
@@ -29,24 +29,38 @@ class AutoRecorderListener(object):
         self.embed = embed
         self.embed_width = embed_width
         self.screenshot_directory = screenshot_directory
+        self.included_tags = included_tags
+        self.excluded_tags = excluded_tags
+        self.test_recording_in_progress = False
         self.ROBOT_LIBRARY_LISTENER = self
 
+        if self.included_tags is not None and self.excluded_tags is not None and "test" not in self.mode:
+            raise ImportError("When include_tags or exclude_tags is set to other options than None, mode needs to be set as test or test,suite")
+
     def _start_test(self, name, attrs):
-        if "test" in self.mode:
+        if ("test" in self.mode 
+                and ((self.included_tags is None) or
+                    any(tag in attrs["tags"] for tag in map(str.strip, self.included_tags.split(',')))
+                and not (self.excluded_tags is None or
+                    any(tag in attrs["tags"] for tag in map(str.strip, self.excluded_tags.split(',')))
+                    ))):
+
+
             id = BuiltIn().get_variable_value("${TEST_NAME}")
-            #BuiltIn().run_keyword_and_ignore_error('ScreenCapLibrary.Start Video Recording',
-            #    "alias=" + str(id), "fps=" + str(self.fps), "monitor=" + str(self.monitor),
-            #    "size_percentage=" + str(self.size_percentage), "embed=" + str(self.embed),
-            #    "embed_width=" + str(self.embed_width))
+
             self.autostart_recording(alias=id, monitor=self.monitor, fps=self.fps,
                 size_percentage=self.size_percentage, embed=self.embed, embed_width=self.embed_width)
+            self.test_recording_in_progress=True
 
 
     def _end_test(self, name, attrs):
-        if "test" in self.mode:
+        if "test" in self.mode and self.test_recording_in_progress == True:
+
             id = BuiltIn().get_variable_value("${TEST_NAME}")
-            #BuiltIn().run_keyword_and_ignore_error('ScreenCapLibrary.Stop Video Recording', "alias=" + id)
             BuiltIn().run_keyword("Stop Recording Test", id)
+            self.test_recording_in_progress=False
+
+            
 
     def _start_suite(self, name, attrs):
         if(self.screenshot_directory):
@@ -56,27 +70,24 @@ class AutoRecorderListener(object):
             BuiltIn().import_library("ScreenCapLibrary", "screenshot_directory=" + self.screenshot_directory)
         else:
             BuiltIn().import_library("ScreenCapLibrary")
+
         if "suite" in self.mode:
             id = BuiltIn().get_variable_value("${SUITE_NAME}")
-            #BuiltIn().run_keyword_and_ignore_error('ScreenCapLibrary.Start Video Recording',
-            #    "alias=" + str(id), "fps=" + str(self.fps), "monitor=" + str(self.monitor),
-            #    "size_percentage=" + str(self.size_percentage), "embed=" + str(self.embed),
-            #    "embed_width=" + str(self.embed_width))
+
             self.autostart_recording(alias=id, monitor=self.monitor, fps=self.fps,
                 size_percentage=self.size_percentage, embed=self.embed, embed_width=self.embed_width)
 
     def _end_suite(self, name, attrs):
         if "suite" in self.mode:
             id = BuiltIn().get_variable_value("${SUITE_NAME}")
-            #BuiltIn().run_keyword_and_ignore_error('ScreenCapLibrary.Stop Video Recording', "alias=" + id)
-            #self.stop_autorecording(id)
+
             BuiltIn().run_keyword("Stop Recording Suite", id)
         
     def autostart_recording(self, alias=None, name="recording", fps=None, size_percentage=1, embed=True, embed_width='800px', monitor=0):
         '''
-        Autostart of recording
-        
         There is no need to execute this keyword manually.
+
+
         Basically - alias for https://mihaiparvu.github.io/ScreenCapLibrary/ScreenCapLibrary.html#Start%20Video%20Recording
         '''
         lib = BuiltIn().get_library_instance("ScreenCapLibrary")
@@ -85,9 +96,9 @@ class AutoRecorderListener(object):
         
     def stop_autorecording(self, alias):
         '''
-        End of autorecording
-        
         There is no need to execute this keyword manually.
+
+
         Basically - alias for https://mihaiparvu.github.io/ScreenCapLibrary/ScreenCapLibrary.html#Stop%20Video%20Recording
         '''
         lib = BuiltIn().get_library_instance("ScreenCapLibrary")
@@ -95,9 +106,9 @@ class AutoRecorderListener(object):
         
     def stop_recording_test(self, alias):
         '''
-        End of autorecording
-        
         There is no need to execute this keyword manually.
+
+
         Basically - alias for https://mihaiparvu.github.io/ScreenCapLibrary/ScreenCapLibrary.html#Stop%20Video%20Recording
         '''
         lib = BuiltIn().get_library_instance("ScreenCapLibrary")
@@ -105,9 +116,9 @@ class AutoRecorderListener(object):
         
     def stop_recording_suite(self, alias):
         '''
-        End of autorecording
-        
         There is no need to execute this keyword manually.
+
+
         Basically - alias for https://mihaiparvu.github.io/ScreenCapLibrary/ScreenCapLibrary.html#Stop%20Video%20Recording
         '''
         lib = BuiltIn().get_library_instance("ScreenCapLibrary")
