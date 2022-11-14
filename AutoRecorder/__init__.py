@@ -13,7 +13,7 @@ Usage
 ------------
 To work with the library only importing it is needed. By default video for each test case is created, but it is possible to create video per whole suite or create videos for test cases and for whole suite.
 
-
+SRAKA
 
 Import arguments can be also used for tuning underlaying ScreenCapLibrary.
 
@@ -101,8 +101,8 @@ Exclude Tags.robot
 Set Location.robot
 
     | *** Settings ***
-    | Documentation     Example Test 2 will not be recorded
-    | Library      AutoRecorder      mode=test    exclude_tags=dont
+    | Documentation     Recordings will be located in /tmp directory (built in variables like ${CURDIR}, ${TEST_NAME}, etc can be used here)
+    | Library      AutoRecorder      mode=suite    screenshot_directory=/tmp
     | Library      SeleniumLibrary
     | 
     | *** Test Cases ***
