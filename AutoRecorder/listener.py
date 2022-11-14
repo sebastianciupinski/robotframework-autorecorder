@@ -31,7 +31,7 @@ class AutoRecorderListener(object):
         self.screenshot_directory = screenshot_directory
         self.included_tags = included_tags
         self.excluded_tags = excluded_tags
-        self.record_tests = False
+        self.test_recording_in_progress = False
         self.ROBOT_LIBRARY_LISTENER = self
 
         if self.included_tags is not None and self.excluded_tags is not None and "test" not in self.mode:
@@ -50,14 +50,17 @@ class AutoRecorderListener(object):
 
             self.autostart_recording(alias=id, monitor=self.monitor, fps=self.fps,
                 size_percentage=self.size_percentage, embed=self.embed, embed_width=self.embed_width)
-            self.record_tests = True
+            self.test_recording_in_progress=True
 
 
     def _end_test(self, name, attrs):
-        if "test" in self.mode and self.record_tests == True:
-            id = BuiltIn().get_variable_value("${TEST_NAME}")
+        if "test" in self.mode and self.test_recording_in_progress == True:
 
+            id = BuiltIn().get_variable_value("${TEST_NAME}")
             BuiltIn().run_keyword("Stop Recording Test", id)
+            self.test_recording_in_progress=False
+
+            
 
     def _start_suite(self, name, attrs):
         if(self.screenshot_directory):
@@ -67,7 +70,7 @@ class AutoRecorderListener(object):
             BuiltIn().import_library("ScreenCapLibrary", "screenshot_directory=" + self.screenshot_directory)
         else:
             BuiltIn().import_library("ScreenCapLibrary")
-            
+
         if "suite" in self.mode:
             id = BuiltIn().get_variable_value("${SUITE_NAME}")
 
