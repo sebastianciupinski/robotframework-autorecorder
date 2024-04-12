@@ -1,6 +1,14 @@
 AutoRecorder for Robot Framework
 ==================================================
 
+_____________________________________________________________________________________________________________________________________
+
+
+**!!! This repository is not actively maintained, but I am open to help and fixing issues, just let me know by submitting issue !!!**
+
+
+_____________________________________________________________________________________________________________________________________
+
 [![AutoRecorder](https://github.com/SanthoshS20/robotframework-autorecorder/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/SanthoshS20/robotframework-autorecorder/actions/workflows/python-app.yml)
 
 Introduction
