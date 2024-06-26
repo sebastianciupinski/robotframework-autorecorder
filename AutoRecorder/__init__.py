@@ -121,7 +121,7 @@ Set Location.robot
     '''
     def __init__(self, mode="test", monitor=0, name="recording",
             fps=None, size_percentage=1, embed=True, embed_width="800px", screenshot_directory=None,
-            included_tags=None, excluded_tags=None):
+            included_tags=None, excluded_tags=None, display_cursor=True):
 
         '''
         Import Arguments:
@@ -146,4 +146,4 @@ Set Location.robot
 
         if context.EXECUTION_CONTEXTS.current:
             if context.EXECUTION_CONTEXTS.current.dry_run is False:
-                super().__init__(mode, monitor, fps, size_percentage, embed, embed_width, screenshot_directory, included_tags, excluded_tags)
+                super().__init__(mode, monitor, fps, display_cursor, size_percentage, embed, embed_width, screenshot_directory, included_tags, excluded_tags)

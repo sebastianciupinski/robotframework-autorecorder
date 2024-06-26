@@ -21,10 +21,11 @@ class AutoRecorderListener(object):
 
         
 
-    def __init__(self, mode, monitor, fps, size_percentage, embed, embed_width, screenshot_directory, included_tags, excluded_tags):
+    def __init__(self, mode, monitor, fps, display_cursor, size_percentage, embed, embed_width, screenshot_directory, included_tags, excluded_tags):
         self.mode = mode
         self.monitor = monitor
         self.fps = fps
+        self.display_cursor = display_cursor
         self.size_percentage = size_percentage
         self.embed = embed
         self.embed_width = embed_width
@@ -67,9 +68,9 @@ class AutoRecorderListener(object):
             if not os.path.exists(self.screenshot_directory):
                 os.makedirs(self.screenshot_directory)
             self.screenshot_directory=self.screenshot_directory.replace("\\", "/")
-            BuiltIn().import_library("ScreenCapLibrary", "screenshot_directory=" + self.screenshot_directory)
+            BuiltIn().import_library("ScreenCapLibrary", "screenshot_directory=" + self.screenshot_directory, "display_cursor=" + str(self.display_cursor))
         else:
-            BuiltIn().import_library("ScreenCapLibrary")
+            BuiltIn().import_library("ScreenCapLibrary", "display_cursor=" + str(self.display_cursor))
 
         if "suite" in self.mode:
             id = BuiltIn().get_variable_value("${SUITE_NAME}")
