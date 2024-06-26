@@ -140,6 +140,8 @@ Set Location.robot
 
         excluded_tags - choose tags to not to record
 
+        display_cursor - choose to add cursor to recording (default True)
+
         monitor, name, fps, size_percentage, embed, embed_with - configuration of underlaying ScreenCapLibrary - see documentation - 
         https://mihaiparvu.github.io/ScreenCapLibrary/ScreenCapLibrary.html#Start%20Video%20Recording
         '''
