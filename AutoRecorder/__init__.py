@@ -148,4 +148,4 @@ Set Location.robot
 
         if context.EXECUTION_CONTEXTS.current:
             if context.EXECUTION_CONTEXTS.current.dry_run is False:
-                super().__init__(mode, monitor, fps, display_cursor, size_percentage, embed, embed_width, screenshot_directory, included_tags, excluded_tags)
+                super().__init__(mode, name, monitor, fps, display_cursor, size_percentage, embed, embed_width, screenshot_directory, included_tags, excluded_tags)
