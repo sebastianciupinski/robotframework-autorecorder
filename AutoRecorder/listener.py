@@ -21,8 +21,9 @@ class AutoRecorderListener(object):
 
         
 
-    def __init__(self, mode, monitor, fps, display_cursor, size_percentage, embed, embed_width, screenshot_directory, included_tags, excluded_tags):
+    def __init__(self, mode, name, monitor, fps, display_cursor, size_percentage, embed, embed_width, screenshot_directory, included_tags, excluded_tags):
         self.mode = mode
+        self.name = name
         self.monitor = monitor
         self.fps = fps
         self.display_cursor = display_cursor
@@ -49,7 +50,7 @@ class AutoRecorderListener(object):
 
             id = BuiltIn().get_variable_value("${TEST_NAME}")
 
-            self.autostart_recording(alias=id, monitor=self.monitor, fps=self.fps,
+            self.autostart_recording(alias=id, name=self.name, monitor=self.monitor, fps=self.fps,
                 size_percentage=self.size_percentage, embed=self.embed, embed_width=self.embed_width)
             self.test_recording_in_progress=True
 
@@ -75,7 +76,7 @@ class AutoRecorderListener(object):
         if "suite" in self.mode:
             id = BuiltIn().get_variable_value("${SUITE_NAME}")
 
-            self.autostart_recording(alias=id, monitor=self.monitor, fps=self.fps,
+            self.autostart_recording(alias=id, name=self.name, monitor=self.monitor, fps=self.fps,
                 size_percentage=self.size_percentage, embed=self.embed, embed_width=self.embed_width)
 
     def _end_suite(self, name, attrs):
@@ -84,7 +85,7 @@ class AutoRecorderListener(object):
 
             BuiltIn().run_keyword("Stop Recording Suite", id)
         
-    def autostart_recording(self, alias=None, name="recording", fps=None, size_percentage=1, embed=True, embed_width='800px', monitor=0):
+    def autostart_recording(self, alias=None, name=None, fps=None, size_percentage=1, embed=True, embed_width='800px', monitor=0):
         '''
         There is no need to execute this keyword manually.
 
